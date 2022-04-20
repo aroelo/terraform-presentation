@@ -1,0 +1,214 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Terraform vs House of Cards</title>
+
+    <link rel="stylesheet" href="dist/reset.css">
+    <link rel="stylesheet" href="dist/reveal.css">
+    <link rel="stylesheet" href="dist/theme/coki.css">
+
+    <!-- Theme used for syntax highlighted code -->
+    <link rel="stylesheet" href="plugin/highlight/monokai.css">
+
+</head>
+<body>
+<div class="reveal">
+    <div class="slides">
+        <section>
+            <h3>Terraform vs House of Cards: <br> managing cloud resources</h3>
+            <p>
+                <small>Created by <a href="https://www.linkedin.com/in/aniek-roelofs-300912b5/">Aniek
+                    Roelofs</a></small>
+            </p>
+            <aside class="notes">
+                Shhh, these are your private notes 📝
+            </aside>
+        </section>
+        <section>
+            <h4>Background</h4>
+            <section data-auto-animate>
+                <h2>Current project</h2>
+                <p>CIC + COKI</p>
+            </section>
+            <section>
+                <a href="https://computation.curtin.edu.au">
+                    <img src="/dist/theme/images/cic-logo.png" alt="cic logo"
+                         style="width: 50%" class="demo-logo">
+                </a>
+                <small>"Applying data science and high-performance computing to collaboratively provide innovative
+                    solutions for real-world problems for government, industry and academia."</small>
+            </section>
+            <section>
+                <a href="https://openknowledge.community">
+                    <img src="/dist/theme/images/coki-logo.svg" alt="coki logo"
+                         style="width: 50%" class="demo-logo">
+                </a>
+                <small>"Develop tools and data that will allow universities to understand how effectively they are
+                    operating as open knowledge institutions"</small>
+                <!--                <small>"Seeks to be the world’s leading hub for research into the performance of universities as-->
+                <!--                    knowledge makers and knowledge takers."</small>-->
+            </section>
+            <section data-background-iframe="https://open.coki.ac/" data-background-interactive>
+            </section>
+            <section
+                    data-background-iframe="https://oaebu-u-m-press.observatory.academy/s/u-m-press/app/dashboards#/view/f6de4970-0686-11ec-a271-a937a93ef099?_g=(filters:!(),refreshInterval:(pause:!t,value:0),time:(from:'2006-01-01',to:now%2B2y))&embed=true"
+                    data-background-interactive
+                    data-preload>
+                <!--                <p style="top: 2%; left: 38%; position: fixed"><a href="https://open.coki.ac/">open.coki.ac</a></p>-->
+            </section>
+            <section>
+                <h4>Code base</h4>
+                <ul>
+                    <li>Approx. 40 data sources</li>
+                    <li>Open source and rehostable</li>
+                </ul>
+                <p><a href="https://github.com/The-Academic-Observatory">https://github.com/The-Academic-Observatory</a>
+                </p>
+            </section>
+            <section>
+                <h4 style="margin: 0">Infrastructure</h4>
+                <img src="/dist/theme/images/coki-infrastructure.svg" alt="coki infrastructure" style="width: 70%">
+            </section>
+        </section>
+        <section>
+            <h4>IaC</h4>
+            <section>
+                <h4>Why do we need Infrastructure as Code?</h4>
+                <span class="fragment">
+                    <img src="/dist/theme/images/xkcd-comic.png" alt="xkcd comic">
+                    <small>by <a href="https://xkcd.com/2054/">xkcd</a>, licensed under CC BY-NC 2.5</small>
+                </span>
+                <!--                reproducability, version control, chaos clicking buttons, blueprint, open source-->
+            </section>
+            <section>
+                <h4>What is it?</h4>
+                <p>Infrastructure as code (IaC) lets you manage your IT infrastructure using configuration
+                    files.</p>
+                <ul>
+                    <li class="fragment">No more button clicking chaos</li>
+                    <li class="fragment">Reproducibility</li>
+                    <li class="fragment">Version Control</li>
+                    <li class="fragment">Accountability</li>
+                </ul>
+            </section>
+            <section>
+                <h4>Available tools</h4>
+                <ul>
+                    <li class="fragment">Terraform
+                        <ul>
+                            <li>2014, HCL, orchestration</li>
+                        </ul>
+                    </li>
+                    <li class="fragment">Pulumi
+                        <ul>
+                            <li>2018, multi-language, orchestration</li>
+                        </ul>
+                    </li>
+                    <li class="fragment">Ansible
+                        <ul>
+                            <li>2012, YAML, configuration management</li>
+                        </ul>
+                    </li>
+                    <li class="fragment">?</li>
+                </ul>
+            </section>
+        </section>
+        <section>
+            <h4>Terraform</h4>
+            <section data-auto-animate>
+                <h4 data-id="code-title">write</h4>
+                <small>Hashicorp Configuration Language - main.tf</small>
+                <pre data-id="code-animation"><code class="tf" data-trim data-line-numbers="|1-8|10-14|16-21">
+                    terraform {
+                      required_providers {
+                        google = {
+                           source  = "hashicorp/google"
+                           version = "4.17.0"
+                        }
+                      }
+                    }
+
+                    provider "google" {
+                      credentials = file("credentials.json")
+                      project     = "data-engineering"
+                      region      = "us-central1"
+                    }
+
+                    resource "google_compute_instance" "default" {
+                      name         = "meetup"
+                      machine_type = "e2-medium"
+                      zone         = "us-central1-a"
+                      tags         = ["foo", "bar"]
+                    }
+                </code></pre>
+            </section>
+            <section>
+                <h4>Registry</h4>
+                <p><a href="https://registry.terraform.io/">https://registry.terraform.io/</a></p>
+                <ul>
+                    <li class="fragment">Providers - AWS, GCP, Azure, but also dbt cloud, ..</li>
+                    <li class="fragment">Modules - network, service accounts, ..</li>
+                </ul>
+            </section>
+            <section>
+                <h4>plan</h4>
+                <p><code>terraform plan</code></p>
+                <p>Check whether the execution plan matches your expectations before changing infrastructure.</p>
+            </section>
+            <section>
+                <h4>apply</h4>
+                <p><code>terraform apply</code></p>
+                <p>Apply your planned changes</p>
+            </section>
+            <section>
+                <h4>Terraform state</h4>
+                <ul>
+                    <li class="fragment">Map config to real world</li>
+                    <li class="fragment">Metadata on resource dependencies</li>
+                    <li class="fragment">Performance - apply without refresh</li>
+                    <li class="fragment">Stored locally or remote</li>
+                </ul>
+                <aside class="notes">
+                    Removing resource from configuration, need to know the order for destruction
+                </aside>
+            </section>
+            <section>
+                <h4>Terraform Cloud</h4>
+                <p>Run Terraform in a remote environment, <br> free and paid features</p>
+            </section>
+        </section>
+        <section>
+            <h3>Terraform Demo</h3>
+            <img src="/dist/theme/images/terraform-graph.svg" alt="terraform graph"
+                 style="width: 50%" class="demo-logo">
+        </section>
+        <!--        <section>Known issues / frustrations</section>-->
+        <!--        <section>Adding tests</section>-->
+        <section>
+            <h3>Thank you</h3>
+        </section>
+    </div>
+</div>
+
+<script src="dist/reveal.js"></script>
+<script src="plugin/notes/notes.js"></script>
+<script src="plugin/markdown/markdown.js"></script>
+<script src="plugin/highlight/highlight.js"></script>
+<script type="text/javascript" src="dist/terraform.js"></script>
+<script>
+    // More info about initialization & config:
+    // - https://revealjs.com/initialization/
+    // - https://revealjs.com/config/
+    Reveal.initialize({
+        hash: true,
+        highlight: {
+            beforeHighlight: hljs => hljs.registerLanguage('terraform', window.hljsDefineTerraform)
+        },
+        // Learn about plugins: https://revealjs.com/plugins/
+        plugins: [RevealMarkdown, RevealHighlight, RevealNotes]
+    });
+</script>
+</body>
+</html>

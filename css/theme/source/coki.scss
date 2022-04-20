@@ -1,0 +1,66 @@
+/**
+ * Black theme for reveal.js. This is the opposite of the 'white' theme.
+ *
+ * By Hakim El Hattab, http://hakim.se
+ */
+
+// Default mixins and settings -----------------
+@import "../template/mixins";
+@import "../template/settings";
+// ---------------------------------------------
+
+// Include theme-specific fonts
+@import url(./fonts/source-sans-pro/source-sans-pro.css);
+
+
+// Override theme settings (see ../template/settings.scss)
+$backgroundColor: #fafafa;
+
+$mainColor: #1A202C;
+$headingColor: #FF671C;
+
+$mainFontSize: 40px;
+$mainFont: 'brandon-grotesque', Helvetica, sans-serif;
+
+// Vertical spacing between blocks of text
+$blockMargin: 20px;
+
+// Headings
+$headingMargin: 0px 0 $blockMargin 0;
+$headingFont: 'Source Sans Pro', Helvetica, sans-serif;
+$headingTextShadow: none;
+$headingLetterSpacing: normal;
+$headingTextTransform: uppercase;
+$headingFontWeight: 600;
+$linkColor: darken($mainColor, 20%);
+$linkColorHover: lighten($linkColor, 15%);
+$selectionBackgroundColor: lighten($linkColor, 25%);
+
+$heading1Size: 2.5em;
+$heading2Size: 1.6em;
+$heading3Size: 1.3em;
+$heading4Size: 1.0em;
+
+// Change text colors against light slide backgrounds
+@include light-bg-text-color(#222);
+
+
+// Generates the presentation background, can be overridden
+// to return a background image or gradient
+@mixin bodyBackground() {
+  background-image: url("../../../dist/theme/images/coki-logo.svg"),
+  url("../../../dist/theme/images/cic-logo.png"),
+  url("../../../dist/theme/images/coki-background.svg");
+  background-size: 21%, 17%, 30%;
+  background-repeat: no-repeat;
+  background-position: 3% 96%, 94% 96%, 100% 0%;
+}
+
+
+// Theme template ------------------------------
+@import "../template/theme";
+// ---------------------------------------------
+
+.reveal a {
+  text-decoration: underline;
+}
